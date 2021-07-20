@@ -10,7 +10,7 @@ const morgan = require("morgan");
 const connectDB = async () => {
   try {
     await mongoose.connect(
-      `mongodb+srv://${process.env.USERNAME}:${process.env.PASSWORD}@react-education.c14bu.mongodb.net/react-education?retryWrites=true&w=majority`,
+      `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@react-education.c14bu.mongodb.net/react-education?retryWrites=true&w=majority`,
       {
         useCreateIndex: true,
         useNewUrlParser: true,
