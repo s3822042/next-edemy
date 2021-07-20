@@ -1,5 +1,12 @@
+# Package
 **/node_modules
 **/package-lock.json
+**/yarn.lock
 **/.next
+
+# Production
 **/dist
 **/build
+
+# Local environment variables
+**/.env
