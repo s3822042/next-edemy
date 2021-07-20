@@ -2,23 +2,28 @@ import { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
 import { SyncOutlined } from "@ant-design/icons";
+import Link from "next/link";
 
 const Register = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
-      const { data } = await axios.post(`http://localhost:8000/api/register`, {
+      const { data } = await axios.post(`/api/register`, {
         username,
         email,
         password,
       });
 
       toast.success("Register Success!");
+      setUsername("");
+      setEmail("");
+      setPassword("");
       setLoading(false);
     } catch (err) {
       toast.error(err.response.data);
@@ -62,6 +67,12 @@ const Register = () => {
             {loading ? <SyncOutlined spin /> : "Register"}
           </button>
         </form>
+        <p className="text-center p-3">
+          Already registered ?{" "}
+          <Link href="/login">
+            <a>Login</a>
+          </Link>
+        </p>
       </div>
     </>
   );

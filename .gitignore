@@ -10,3 +10,4 @@
 
 # Local environment variables
 **/.env
+**/.env.local
