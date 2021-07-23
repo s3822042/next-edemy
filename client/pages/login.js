@@ -3,11 +3,26 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { SyncOutlined } from "@ant-design/icons";
 import Link from "next/link";
+import { Context } from "../context";
+import { useRouter } from "next/router";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // state
+  const {
+    state: { user },
+    dispatch,
+  } = useContext(Context);
+
+  // router
+  const router = useRouter();
+
+  useEffect(() => {
+    if (user !== null) router.push("/");
+  }, [user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,6 +32,13 @@ const Login = () => {
         email,
         password,
       });
+      dispatch({
+        type: "LOGIN",
+        payload: data,
+      });
+      // save in local storage
+      window.localStorage.setItem("user", JSON.stringify(data));
+      router.push("/user");
     } catch (err) {
       toast(err.response.data);
       setLoading(false);
@@ -57,7 +79,7 @@ const Login = () => {
         </form>
 
         <p className="text-center pt-3">
-          Not yet registered ?{" "}
+          Not yet registered?{" "}
           <Link href="/register">
             <a>Register</a>
           </Link>

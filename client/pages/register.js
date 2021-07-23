@@ -3,25 +3,38 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import { SyncOutlined } from "@ant-design/icons";
 import Link from "next/link";
-
+import { Context } from "../context";
+import { useRouter } from "next/router";
+import user from "../../server/models/user";
 
 const Register = () => {
-  const [username, setUsername] = useState("");
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
+
+  const {
+    state: { user },
+  } = useContext(Context);
+
+  const router = useRouter();
+
+  useEffect(() => {
+    if (user !== null) router.push("/");
+  }, [user]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       setLoading(true);
       const { data } = await axios.post(`/api/register`, {
-        username,
+        name,
         email,
         password,
       });
+      // console.log("REGISTER RESPONSE", data);
       toast("Registration successful. Please login.");
-      setUsername("");
+      setName("");
       setEmail("");
       setPassword("");
       setLoading(false);
@@ -40,8 +53,8 @@ const Register = () => {
           <input
             type="text"
             className="form-control mb-4 p-4"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
+            value={name}
+            onChange={(e) => setName(e.target.value)}
             placeholder="Enter name"
             required
           />
@@ -67,7 +80,7 @@ const Register = () => {
           <button
             type="submit"
             className="btn btn-block btn-primary"
-            disabled={!username || !email || !password || loading}
+            disabled={!name || !email || !password || loading}
           >
             {loading ? <SyncOutlined spin /> : "Submit"}
           </button>
